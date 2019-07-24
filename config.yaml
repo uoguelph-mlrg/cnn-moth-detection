@@ -1,0 +1,147 @@
+# Configuration file for automoth project
+
+flag_debug: False
+# flag_debug: True
+# given flag_debug is True, some of these parameters will be modified to _toy datasets / parameters in pipeline.py
+
+data_path: "~/Data/bugs_annotated_2014/new_separation"
+write_path: "~/Data/wding/tmp/bugs"
+detect_valid_set: "valid/combined"
+detect_test_set: "test/combined"
+valid_subpath_pos: "valid/withmoth"
+valid_subpath_neg: "valid/nomoth"
+test_subpath_pos: "test/withmoth"
+test_subpath_neg: "test/nomoth"
+
+detect_train_set_toy: "train_toy/combined"
+detect_valid_set_toy: "valid_toy/combined"
+detect_test_set_toy: "test_toy/combined"
+train_subpath_pos_toy: "train_toy/withmoth"
+train_subpath_neg_toy: "train_toy/nomoth"
+valid_subpath_pos_toy: "valid_toy/withmoth"
+valid_subpath_neg_toy: "valid_toy/nomoth"
+test_subpath_pos_toy: "test_toy/withmoth"
+test_subpath_neg_toy: "test_toy/nomoth"
+
+# In ConvNet training, number iterations to go through each data point (moth patch)
+n_iter: 30
+n_iter_toy: 2
+
+# Number of rounds of retraining, corresponding to bootstrapping concept in the paper 
+n_retrain: 1
+n_retrain_toy: 1
+
+# Number of negative example to pick in the bootstrapping stage
+num_neg_to_pick: 6000
+detect_train_set: "train/combined"
+train_subpath_pos: "train/withmoth"
+train_subpath_neg: "train/nomoth"
+
+# num_neg_to_pick: 4800
+# detect_train_set: "train_80/combined"
+# train_subpath_pos: "train_80/withmoth"
+# train_subpath_neg: "train_80/nomoth"
+
+# num_neg_to_pick: 3600
+# detect_train_set: "train_60/combined"
+# train_subpath_pos: "train_60/withmoth"
+# train_subpath_neg: "train_60/nomoth"
+
+# num_neg_to_pick: 2400
+# detect_train_set: "train_40/combined"
+# train_subpath_pos: "train_40/withmoth"
+# train_subpath_neg: "train_40/nomoth"
+
+# num_neg_to_pick: 1200
+# detect_train_set: "train_20/combined"
+# train_subpath_pos: "train_20/withmoth"
+# train_subpath_neg: "train_20/nomoth"
+
+num_neg_to_pick_toy: 600
+
+# overlapping coefficient threshold, when detection and groundtruth are considered as a match
+overlap_threshold: 0.5
+
+# threshold for Non-maximal suppression (see NMS section in the paper)
+nms_threshhold: 0.1
+
+# for logistic regression (not that important)
+class_weight: "auto"
+
+# if use misdetects collected in previous rounds (this matters only when n_retrain > 1)
+use_all_falsepositives: True
+
+# if use misdetected moth in previous rounds (should set to false as they are already in the data)
+flag_use_false_neg: False
+
+# if preserve the original scale of moth patch (should set to false)
+flag_rescale: False
+
+# if use color image
+flag_rgb: True
+
+# if use rotation augmentation at test time (should set to false as it is very slow and does not provide much improvement)
+# flag_det_rot_aug: True
+flag_det_rot_aug: False
+
+# if use rotational data augmentation (if number of training moths is small, should set to True, this is increasing the size of data by 8 times)
+# flag_rot_aug: True
+flag_rot_aug: False
+flag_rot_aug_toy: True
+
+# if use rotational data augmentation (if number of training moths is really small, should set to True, this is increasing the size of data by 9 times)
+# flag_trans_aug: True
+flag_trans_aug: False
+# offset of in the translational data augmentation
+dist_trans_list: np.array([-3, 0, 3])
+
+# use validation data to monitor training
+flag_take_valid: True
+
+# if use pre-segmentation (this functionality is not well developed, should always set to False)
+flag_usemask: False
+# flag_usemask: False
+thresh_mask: 0.05
+
+# if randomly permute data before training, should set to true, especially when the data is augmented
+flag_randperm: True
+
+# type of classifier, should use "convnet"
+# classifier_type: "convnet"  # default
+# classifier_type: "logreg"
+# classifier_type: "svm"
+classifier_type: "bowsvm"
+
+# type of preprocessing, should use "univar"
+# preproc_type: "univar"  # default
+# preproc_type: "zca"
+# preproc_type: "lcn"
+preproc_type: "none"
+
+# svm parameters
+bowsvm_config: {
+    num_cluster: 128,
+    kernel: linear,
+    degree: 3,
+}
+
+# size of classifier input (This should not change)
+target_width: &target_width 28
+target_height: *target_width
+target_stride_x: &target_stride_x 7  # 1/4 target height and width
+target_stride_y: *target_stride_x
+
+
+# parameters for multiple scale detection
+# flag_multiscale detection should be set to True
+# when doing single scale detection, just provide only one scale for detect_width_list
+# suggested scales are 21, 28, 35 with 21 the best
+flag_multiscale: True
+# flag_multiscale: False
+detect_width_list: &detect_width_list [28] # has to be in increasing order
+# detect_width_list: &detect_width_list [56] # has to be in increasing order
+detect_width_list_toy: &detect_width_list_toy [28] # has to be in increasing order
+# detect_width_list: &detect_width_list [21, 28, 35, 42] # has to be in increasing order
+# detect_width_list_toy: &detect_width_list_toy [49, 56] # has to be in increasing order
+detect_height_list: *detect_width_list
+detect_height_list_toy: *detect_width_list_toy

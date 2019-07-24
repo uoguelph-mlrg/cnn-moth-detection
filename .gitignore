@@ -1,0 +1,12 @@
+*~
+*.pyc
+*.pkl
+code_analysis/*
+test.py
+*_TEST.py
+pics/*
+*.jpg
+.nfs*
+gwd_tools/*
+temp/*
+xx*
